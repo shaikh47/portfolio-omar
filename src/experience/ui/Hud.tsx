@@ -21,7 +21,7 @@ export function Hud({ onExit }: { onExit: () => void }) {
                 </kbd>
               ))}
             </span>{' '}
-            to walk · click exhibits to inspect
+            to walk · drag to look · scroll to zoom · click exhibits to inspect
           </p>
         </div>
       </motion.div>
