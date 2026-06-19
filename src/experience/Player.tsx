@@ -193,7 +193,9 @@ export function Player({ playerPos, locked }: Props) {
   // own forward (+z) is flipped by this base rotation.
   return (
     <group ref={group} position={[SPAWN.x, 0, SPAWN.z]} rotation={[0, Math.PI, 0]}>
-      <Character config={PLAYER_CHARACTER} motion={motion} />
+      <group rotation={[0.1, 0, 0]}>
+        <Character config={PLAYER_CHARACTER} motion={motion} />
+      </group>
     </group>
   )
 }
