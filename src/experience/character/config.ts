@@ -11,7 +11,7 @@ import type { CharacterConfig } from "./types";
 export const PLAYER_CHARACTER: CharacterConfig = {
   model: { url: modelUrlOmar, format: "glb" },
   // GLB model is already in metre-scale.
-  scale: 1.0,
+  scale: 1.6,
   animations: {
     idle: { url: idleUrl, format: "fbx", lockRootMotion: true },
     walk: { url: walkUrl, format: "fbx", lockRootMotion: true },

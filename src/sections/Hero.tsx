@@ -1,30 +1,62 @@
-import { motion } from 'framer-motion'
-import { ArrowDown, Mail } from 'lucide-react'
-import { GithubIcon, LinkedinIcon } from '../components/icons'
-import type { ResumeData } from '../types'
+import { useState, useCallback } from "react";
+import { motion } from "framer-motion";
+import { ArrowDown, Mail } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "../components/icons";
+import type { ResumeData } from "../types";
 
 interface HeroProps {
-  data: ResumeData
+  data: ResumeData;
 }
 
 export function Hero({ data }: HeroProps) {
+  const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(
+    null,
+  );
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setMousePos(null);
+  }, []);
+
   const scrollToProjects = () =>
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
+    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
 
   return (
     <section
       id="hero"
       className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Grid background */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage:
-            'linear-gradient(to right, rgb(229 231 235 / 0.4) 1px, transparent 1px), linear-gradient(to bottom, rgb(229 231 235 / 0.4) 1px, transparent 1px)',
-          backgroundSize: '48px 48px',
+            "linear-gradient(to right, rgb(229 231 235 / 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgb(229 231 235 / 0.1) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
         }}
       />
+      {mousePos && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-200"
+          style={{
+            backgroundImage: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgb(59 130 246 / 0.22) 0%, rgb(59 130 246 / 0.09) 48px, rgb(59 130 246 / 0.02) 96px, transparent 144px)`,
+            maskImage:
+              "linear-gradient(to right, transparent 1px, white 1px), linear-gradient(to bottom, transparent 1px, white 1px)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 1px, white 1px), linear-gradient(to bottom, transparent 1px, white 1px)",
+            maskSize: "48px 48px",
+            WebkitMaskSize: "48px 48px",
+            maskComposite: "intersect",
+            WebkitMaskComposite: "source-in",
+          }}
+        />
+      )}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white dark:to-neutral-950 pointer-events-none" />
       {/* Radial glow */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-blue-400/10 dark:bg-blue-500/10 blur-[120px] pointer-events-none" />
@@ -48,7 +80,7 @@ export function Hero({ data }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4 leading-[1.05]"
         >
-          Syed MD{' '}
+          Syed MD{" "}
           <span className="bg-gradient-to-r from-blue-500 to-violet-500 bg-clip-text text-transparent">
             Omar Shaikh
           </span>
@@ -100,23 +132,23 @@ export function Hero({ data }: HeroProps) {
             {
               href: `https://github.com/${data.github}`,
               icon: <GithubIcon size={18} />,
-              label: 'GitHub',
+              label: "GitHub",
             },
             {
               href: `https://linkedin.com/in/${data.linkedin}`,
               icon: <LinkedinIcon size={18} />,
-              label: 'LinkedIn',
+              label: "LinkedIn",
             },
             {
               href: `mailto:${data.email}`,
               icon: <Mail size={18} />,
-              label: 'Email',
+              label: "Email",
             },
           ].map(({ href, icon, label }) => (
             <a
               key={label}
               href={href}
-              target={label !== 'Email' ? '_blank' : undefined}
+              target={label !== "Email" ? "_blank" : undefined}
               rel="noopener noreferrer"
               aria-label={label}
               className="p-2.5 rounded-lg border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white hover:border-neutral-300 dark:hover:border-neutral-600 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-all duration-200"
@@ -137,11 +169,11 @@ export function Hero({ data }: HeroProps) {
         <span className="text-xs tracking-widest uppercase">Scroll</span>
         <motion.div
           animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
+          transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut" }}
         >
           <ArrowDown size={16} />
         </motion.div>
       </motion.div>
     </section>
-  )
+  );
 }
